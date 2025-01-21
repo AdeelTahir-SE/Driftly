@@ -16,10 +16,10 @@ export default function BoardingItem(props: Props) {
         resizeMode="contain" 
         className="mb-6 max-w-80 max-h-72" 
       />
-      <Text className="text-3xl text-center font-semibold text-black mb-4">
+      <Text className="text-3xl text-center font-semibold text-white mb-4">
         {title}
       </Text>
-      <Text className="text-lg text-center text-gray-700 font-medium w-full max-w-screen flex-wrap">
+      <Text className="text-lg text-center text-gray-300 font-medium w-full max-w-screen flex-wrap">
         {subTitle}
       </Text>
     </View>
