@@ -1,18 +1,27 @@
-import { View, Text } from "react-native";
-import { Image } from "react-native";
+import { View, Text, Image } from "react-native";
 
-type props = {
+type Props = {
   imageSource: any;
   title: string;
   subTitle: string;
 };
-export default function BoardingItem(props: props) {
+
+export default function BoardingItem(props: Props) {
   const { imageSource, title, subTitle } = props;
+
   return (
-    <View className="flex flex-col items-center justify-center ">
-      <Image source={imageSource} resizeMode="contain" />
-      <Text className="text-3xl text-center font-bold">{title}</Text>
-      <Text className="text-center text-xl font-semibold">{subTitle}</Text>
+    <View className="flex-col justify-center items-center w-screen">
+      <Image 
+        source={imageSource} 
+        resizeMode="contain" 
+        className="mb-6 max-w-80 max-h-72" 
+      />
+      <Text className="text-3xl text-center font-semibold text-black mb-4">
+        {title}
+      </Text>
+      <Text className="text-lg text-center text-gray-700 font-medium w-full max-w-screen flex-wrap">
+        {subTitle}
+      </Text>
     </View>
   );
 }
