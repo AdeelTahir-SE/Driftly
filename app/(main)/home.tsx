@@ -1,23 +1,16 @@
-import { SignedIn, SignedOut, useUser } from '@clerk/clerk-expo'
-import { Link } from 'expo-router'
-import { Text, View } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+/* eslint-disable prettier/prettier */
+import { Text, View, Image, ImageBackground } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import MapView, { PROVIDER_DEFAULT } from "react-native-maps";
 export default function HomeScreen() {
-  const { user } = useUser()
-
   return (
-    <SafeAreaView className='flex justify-center items-center'>
-      <SignedIn>
-        <Text className='text-4xl'>Hello {user?.emailAddresses[0].emailAddress}</Text>
-      </SignedIn>
-      <SignedOut>
-        <Link href="/(auth)/signIn">
-          <Text>Sign in</Text>
-        </Link>
-        <Link href="/(auth)/signUp">
-          <Text>Sign up</Text>
-        </Link>
-      </SignedOut>
+    <SafeAreaView className="flex justify-center items-center">
+     <Text>Hello</Text>
+     <MapView provider={PROVIDER_DEFAULT} className="w-full h-full min-w-full min-h-72 border-2 rounded-2xl">
+      <Text>Hello</Text>
+     </MapView>
+     <Text>Hello</Text>
+
     </SafeAreaView>
-  )
+  );
 }

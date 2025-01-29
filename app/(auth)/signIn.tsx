@@ -5,7 +5,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import { useSignIn } from '@clerk/clerk-expo'
+import { useSignIn } from "@clerk/clerk-expo";
 import { useClerk } from "@clerk/clerk-expo";
 import React from "react";
 import { LinearGradient } from "expo-linear-gradient";
@@ -13,36 +13,33 @@ import FormField from "@/components/formField";
 import { useRouter, Link } from "expo-router";
 import { useState } from "react";
 const SignIn = () => {
-  const { signIn, setActive, isLoaded } = useSignIn()
-  const{signOut}=useClerk()
+  const { signIn, setActive, isLoaded } = useSignIn();
+  const { signOut } = useClerk();
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
   const router = useRouter();
 
-
   const onSignInPress = React.useCallback(async () => {
-    if (!isLoaded) return
-  await signOut()
+    if (!isLoaded) return;
+    await signOut();
     try {
       const signInAttempt = await signIn.create({
         identifier: form.email,
-        password:form.password,
-      })
+        password: form.password,
+      });
 
-
-      if (signInAttempt.status === 'complete') {
-        await setActive({ session: signInAttempt.createdSessionId })
-        router.replace("../home")      } 
-        else {
-        console.error(JSON.stringify(signInAttempt, null, 2))
+      if (signInAttempt.status === "complete") {
+        await setActive({ session: signInAttempt.createdSessionId });
+        router.replace("../home");
+      } else {
+        console.error(JSON.stringify(signInAttempt, null, 2));
       }
     } catch (err) {
-      console.error(JSON.stringify(err, null, 2))
+      console.error(JSON.stringify(err, null, 2));
     }
-  }, [isLoaded, form.email,form.password])
-
+  }, [isLoaded, signOut, signIn, form.email, form.password, setActive, router]);
 
   return (
     <LinearGradient

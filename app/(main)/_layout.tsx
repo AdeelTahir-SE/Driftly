@@ -1,30 +1,28 @@
 import { Tabs } from "expo-router";
 import { View, Image, Text } from "react-native";
-import { styled } from "nativewind";
 
 type TabIconProps = {
   focused: boolean;
   color: string;
   icon: any;
+  title:string
 };
 
-const TabIcon = ({ focused, color, icon }: TabIconProps) => {
+const TabIcon = ({ focused, color, icon,title}: TabIconProps) => {
   return (
     <View
       className={`flex items-center justify-center flex-col rounded-full ${
-        focused ? "bg-orange-500 w-14 h-14 p-8" : "w-12 h-12 p-1"
+        focused ? "bg-orange-500 w-16 h-16 p-8" : "w-14 h-14 p-1"
       }`}
     >
       <Image source={icon} resizeMode="contain" className="w-8 h-8" />
-      <View className="flex justify-center items-center">
       <Text
         className={` ${
-          focused ? "text-white font-bold absolute text-xs" : "text-gray-500"
+          focused ? "flex-none " : "text-gray-500"
         }`}
       >
-        Home
+        {title}
       </Text>
-      </View>
     </View>
   );
 };
@@ -42,7 +40,7 @@ export default function MainLayout() {
           borderRadius: 300,
           flexDirection: "row",
           justifyContent: "space-between",
-          alignItems: "flex-start",
+          alignItems: "start",
           paddingTop: 10,
           paddingHorizontal: 20,
         },
@@ -54,7 +52,7 @@ export default function MainLayout() {
           headerShown: false,
           tabBarShowLabel: false,
           tabBarIcon: ({ color, focused }) => (
-            <TabIcon focused={focused} color={color} icon={require("@/assets/images/home.png")} />
+            <TabIcon focused={focused} color={color} icon={require("@/assets/images/home.png")} title="Home" />
           ),
         }}
       />
@@ -64,7 +62,7 @@ export default function MainLayout() {
           headerShown: false,
           tabBarShowLabel: false,
           tabBarIcon: ({ color, focused }) => (
-            <TabIcon focused={focused} color={color} icon={require("@/assets/images/rides.png")} />
+            <TabIcon focused={focused} color={color} icon={require("@/assets/images/rides.png")} title="Ride" />
           ),
         }}
       />
@@ -74,7 +72,7 @@ export default function MainLayout() {
           headerShown: false,
           tabBarShowLabel: false,
           tabBarIcon: ({ color, focused }) => (
-            <TabIcon focused={focused} color={color} icon={require("@/assets/images/chat.png")} />
+            <TabIcon focused={focused} color={color} icon={require("@/assets/images/chat.png")} title="Chat"/>
           ),
         }}
       />
@@ -84,7 +82,7 @@ export default function MainLayout() {
           headerShown: false,
           tabBarShowLabel: false,
           tabBarIcon: ({ color, focused }) => (
-            <TabIcon focused={focused} color={color} icon={require("@/assets/images/profile.png")} />
+            <TabIcon focused={focused} color={color} icon={require("@/assets/images/profile.png")} title="Profile"/>
           ),
         }}
       />

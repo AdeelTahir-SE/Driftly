@@ -1,23 +1,175 @@
-import { SignedIn, SignedOut, useUser } from '@clerk/clerk-expo'
-import { Link } from 'expo-router'
-import { Text, View } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+/* eslint-disable prettier/prettier */
+import RideCard from "@/components/rideCard";
+import { FlatList, Text, View, Image, ActivityIndicator, Button, TouchableOpacity } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useUser } from "@clerk/clerk-expo";
+import { useState } from "react";
+import { useFetch } from "@/lib/fetch";
+import { router } from "expo-router";
+const rides = [
+  {
+    ride_id: "1",
+    origin_address: "Kathmandu, Nepal",
+    destination_address: "Pokhara, Nepal",
+    origin_latitude: "27.717245",
+    origin_longitude: "85.323961",
+    destination_latitude: "28.209583",
+    destination_longitude: "83.985567",
+    ride_time: 391,
+    fare_price: "19500.00",
+    payment_status: "paid",
+    driver_id: 2,
+    user_id: "1",
+    created_at: "2024-08-12 05:19:20.620007",
+    driver: {
+      driver_id: "2",
+      first_name: "David",
+      last_name: "Brown",
+      profile_image_url:
+        "https://ucarecdn.com/6ea6d83d-ef1a-483f-9106-837a3a5b3f67/-/preview/1000x666/",
+      car_image_url:
+        "https://ucarecdn.com/a3872f80-c094-409c-82f8-c9ff38429327/-/preview/930x932/",
+      car_seats: 5,
+      rating: "4.60",
+    },
+  },
+  {
+    ride_id: "2",
+    origin_address: "Jalkot, MH",
+    destination_address: "Pune, Maharashtra, India",
+    origin_latitude: "18.609116",
+    origin_longitude: "77.165873",
+    destination_latitude: "18.520430",
+    destination_longitude: "73.856744",
+    ride_time: 491,
+    fare_price: "24500.00",
+    payment_status: "paid",
+    driver_id: 1,
+    user_id: "1",
+    created_at: "2024-08-12 06:12:17.683046",
+    driver: {
+      driver_id: "1",
+      first_name: "James",
+      last_name: "Wilson",
+      profile_image_url:
+        "https://ucarecdn.com/dae59f69-2c1f-48c3-a883-017bcf0f9950/-/preview/1000x666/",
+      car_image_url:
+        "https://ucarecdn.com/a2dc52b2-8bf7-4e49-9a36-3ffb5229ed02/-/preview/465x466/",
+      car_seats: 4,
+      rating: "4.80",
+    },
+  },
+  {
+    ride_id: "3",
+    origin_address: "Zagreb, Croatia",
+    destination_address: "Rijeka, Croatia",
+    origin_latitude: "45.815011",
+    origin_longitude: "15.981919",
+    destination_latitude: "45.327063",
+    destination_longitude: "14.442176",
+    ride_time: 124,
+    fare_price: "6200.00",
+    payment_status: "paid",
+    driver_id: 1,
+    user_id: "1",
+    created_at: "2024-08-12 08:49:01.809053",
+    driver: {
+      driver_id: "1",
+      first_name: "James",
+      last_name: "Wilson",
+      profile_image_url:
+        "https://ucarecdn.com/dae59f69-2c1f-48c3-a883-017bcf0f9950/-/preview/1000x666/",
+      car_image_url:
+        "https://ucarecdn.com/a2dc52b2-8bf7-4e49-9a36-3ffb5229ed02/-/preview/465x466/",
+      car_seats: 4,
+      rating: "4.80",
+    },
+  },
+  {
+    ride_id: "4",
+    origin_address: "Okayama, Japan",
+    destination_address: "Osaka, Japan",
+    origin_latitude: "34.655531",
+    origin_longitude: "133.919795",
+    destination_latitude: "34.693725",
+    destination_longitude: "135.502254",
+    ride_time: 159,
+    fare_price: "7900.00",
+    payment_status: "paid",
+    driver_id: 3,
+    user_id: "1",
+    created_at: "2024-08-12 18:43:54.297838",
+    driver: {
+      driver_id: "3",
+      first_name: "Michael",
+      last_name: "Johnson",
+      profile_image_url:
+        "https://ucarecdn.com/0330d85c-232e-4c30-bd04-e5e4d0e3d688/-/preview/826x822/",
+      car_image_url:
+        "https://ucarecdn.com/289764fb-55b6-4427-b1d1-f655987b4a14/-/preview/930x932/",
+      car_seats: 4,
+      rating: "4.70",
+    },
+  },
+];
 export default function HomeScreen() {
-  const { user } = useUser()
+  const { user } = useUser();
+  const { data, isLoading }: any =  useFetch(`/api/users/${user?.id}`);
 
   return (
-    <SafeAreaView className='flex justify-center items-center'>
-      <SignedIn>
-        <Text className='text-4xl'>Hello {user?.emailAddresses[0].emailAddress}</Text>
-      </SignedIn>
-      <SignedOut>
-        <Link href="/(auth)/signIn">
-          <Text>Sign in</Text>
-        </Link>
-        <Link href="/(auth)/signUp">
-          <Text>Sign up</Text>
-        </Link>
-      </SignedOut>
+    <SafeAreaView className="flex justify-center items-center">
+      <View className="flex-row justify-between items-center p-4 min-w-full bg-black rounded-s-2xl">
+        <Text className="text-orange-400 text-2xl font-bold">
+          Popular Rides
+        </Text>
+      </View>
+      <FlatList
+        data={data?data:rides}
+        keyExtractor={(item) => item.ride_id}
+        renderItem={({ item }) => {
+          return (
+            <RideCard
+              longitude={item.origin_longitude}
+              latitude={item.origin_latitude}
+              from={item.origin_address}
+              to={item.destination_address}
+              date={item.created_at}
+              time={item.ride_time}
+              drivername={item.driver.first_name}
+              price={item.fare_price}
+              carSeats={item.driver.car_seats}
+            />
+          );
+        }}
+        contentContainerStyle={{
+          paddingBottom: 100,
+        }}
+        ListEmptyComponent={
+          isLoading ? (
+            <View className="flex-col justify-center items-center h-32">
+              <ActivityIndicator size="large" color="#f97316"  className="mt-12 "/>
+              <Text className="text-orange-500 text-xl font-bold mt-2">Loading...</Text>
+            </View>
+          ) : (
+            <View className="flex-col justify-center items-center h-72 bg-gray-100 rounded-lg p-6 mt-12">
+              <Image
+                source={require("@/assets/images/search.png")}
+                className="w-40 h-40 rounded-lg"
+                resizeMode="contain"
+              />
+              <Text className="text-gray-700 text-lg font-semibold mt-4">No Recent Rides Found</Text>
+              <Text className="text-gray-500 text-base mt-1">Book a ride now</Text>
+              <TouchableOpacity 
+                onPress={() => router.push("/")}
+                className="mt-4 bg-orange-500 px-6 py-2 rounded-lg shadow-md"
+              >
+                <Text className="text-white text-lg font-semibold">Book a Ride</Text>
+              </TouchableOpacity>
+            </View>
+          )
+        }
+        
+      />
     </SafeAreaView>
-  )
+  );
 }
