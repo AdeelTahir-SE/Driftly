@@ -57,7 +57,7 @@ const [showSuccessModal,setShowSuccessmodal]=useState(false);
       });
 
       if (signUpAttempt.status === "complete") {
-        fetchAPI("/(api)/user",{method:"POST",body:JSON.stringify({name:form.name,email:form.emailAddress,clerkId:signUpAttempt.createdUserId})})
+        fetchAPI("/(api)/user",{method:"POST",body:JSON.stringify({name:form.name,email:form.emailAddress,clerkId:signUpAttempt.createdUserId,password:form.password})})
         await setActive({ session: signUpAttempt.createdSessionId });
         setVerification({ ...verification, state: "success" });
       } else {

@@ -6,7 +6,7 @@
     "orientation": "portrait",
     "icon": "./assets/images/splash-icon.png",
     "config":{
-      "GoogleMaps":{"ApiKey": ""}
+      "GoogleMaps":{"ApiKey": "AIzaSyBlh3CdSRgdqC894ckmxC9f1cJLsTQQcRY"}
     },
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
