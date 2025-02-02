@@ -13,7 +13,7 @@ export default function ChatScreen() {
       setMessages([
         {
           _id: 1,
-          text: `Hello! How can I assist you today?`,
+          text: `Hello`,
           createdAt: new Date(),
           user: {
             _id: 2,

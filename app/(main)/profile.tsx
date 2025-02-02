@@ -1,12 +1,13 @@
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Image, View, Text, TextInput, ActivityIndicator, TouchableOpacity } from "react-native";
 import { fetchAPI } from "@/lib/fetch";
-import { useUser } from "@clerk/clerk-expo";
+import { useAuth, useUser } from "@clerk/clerk-expo";
 import { useEffect, useState } from "react";
 
-export default function HomeScreen() {
+export default function ProfileScreen() {
   const { user } = useUser();
   const [profileData, setProfileData] = useState(null);
+  const { signOut } = useAuth();
   const [form, setForm] = useState({
     name: "",
     password: "",
@@ -91,6 +92,15 @@ export default function HomeScreen() {
                 className="bg-orange-600 py-3 rounded-full text-lg font-bold flex justify-center items-center"
               >
                 <Text className="text-white">Update Profile</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View className="w-full">
+              <TouchableOpacity
+                onPress={() => signOut()}
+                className="bg-red-600 py-3 rounded-full text-lg font-bold flex justify-center items-center"
+              >
+                <Text className="text-white">Sign Out</Text>
               </TouchableOpacity>
             </View>
           </>

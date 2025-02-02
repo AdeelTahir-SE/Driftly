@@ -27,6 +27,11 @@ export const useLocationStore = create<any>((set) => ({
       destLongitude: destLongitude,
       destLatitude: destLatitude,
     })),
+    clearDestLocation: () => set(() => ({
+      destAddress: null,
+      destLongitude: null,
+      destLatitude: null,
+    })),
 }));
 
 export const useDriverStore = create<any>((set) => ({

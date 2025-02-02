@@ -73,7 +73,7 @@ export const calculateRegion = ({
   };
 };
 
-export const calculateDriverTimes = async ({
+export const FcalculateDriverTimes = async ({
   markers,
   userLatitude,
   userLongitude,
@@ -99,6 +99,7 @@ export const calculateDriverTimes = async ({
       const responseToUser = await fetch(
         `https://maps.googleapis.com/maps/api/directions/json?origin=${marker.latitude},${marker.longitude}&destination=${userLatitude},${userLongitude}&key=${directionsAPI}`
       );
+      console.log("responseToUser",responseToUser);
       const dataToUser = await responseToUser.json();
       const timeToUser = dataToUser.routes[0].legs[0].duration.value; // Time in seconds
 

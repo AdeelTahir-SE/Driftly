@@ -18,7 +18,7 @@ const DriverCard = ({ item, selected, setSelected }: DriverCardProps) => {
 
       <View className="flex-1 flex flex-col items-start justify-center mx-3">
         <View className="flex flex-row items-center justify-start mb-1">
-          <Text className="text-lg font-JakartaRegular">{item.title}</Text>
+          <Text className="text-lg font-JakartaRegular">{item.first_name} {item.last_name}</Text>
 
           <View className="flex flex-row items-center space-x-1 ml-2">
             <Image source={require("@/assets/images/star.png")} className="w-3.5 h-3.5" />
@@ -30,7 +30,7 @@ const DriverCard = ({ item, selected, setSelected }: DriverCardProps) => {
           <View className="flex flex-row items-center">
             <Image source={require("@/assets/images/dollar.png")} className="w-4 h-4" />
             <Text className="text-sm font-JakartaRegular ml-1">
-              ${item.price}
+              ${item.price?item.price:25}
             </Text>
           </View>
 
