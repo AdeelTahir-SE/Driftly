@@ -1,10 +1,8 @@
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Image, View, Text, TextInput, ActivityIndicator } from "react-native";
+import { Image, View, Text, TextInput, ActivityIndicator, TouchableOpacity } from "react-native";
 import { fetchAPI } from "@/lib/fetch";
 import { useUser } from "@clerk/clerk-expo";
 import { useEffect, useState } from "react";
-import { LinearGradient } from "expo-linear-gradient"; 
-
 
 export default function HomeScreen() {
   const { user } = useUser();
@@ -15,28 +13,27 @@ export default function HomeScreen() {
   });
 
   async function updateProfile(form) {
-    const response = await fetchAPI(`/(api)/user`, {
+    const response = await fetchAPI("/(api)/user", {
       method: "PUT",
-      body: JSON.stringify({...form,userId:user?.id}),
+      body: JSON.stringify({ ...form, userId: user?.id }),
     });
     console.log(response);
   }
-  
+
   useEffect(() => {
     if (user?.id) {
       async function fetchProfile() {
         try {
-          const data = await fetchAPI(`/(api)/user`, {
+          const data = await fetchAPI(`/(api)/user?userId=${user?.id}`, {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
-            },
-            body:JSON.stringify({userId:user?.id})
+            }
           });
-          setProfileData(data);
+          setProfileData(data.response);
           setForm({
-            name: data.name,
-            password: data.password,
+            name: data.response.name,
+            password: data.response.password,
           });
         } catch (error) {
           console.error("Error fetching profile data:", error);
@@ -47,63 +44,63 @@ export default function HomeScreen() {
   }, [user?.id]);
 
   return (
-    <SafeAreaView className="flex-1">
-      <LinearGradient
-        colors={['#000000', '#FFA500']} // Black and Orange gradient
-        style={{ flex: 1 }}
-      >
-        <View className="flex-1 flex-col w-full h-full justify-center items-center">
+    <SafeAreaView className="flex-1 bg-gray-100">
+      <View className="flex-1 justify-center items-center py-6">
         <Image
           source={require("@/assets/images/profile.png")}
           className="w-40 h-40 rounded-full mb-6"
         />
-        </View>
-        <View className="flex-1 justify-center items-center">
-          {profileData ? (
-            <>
-              <View className="mb-6">
-                <Text className="text-xl text-white">Email</Text>
-                <Text className="text-lg text-white">
-                  {user?.emailAddresses[0].emailAddress.split("@")[0]}
-                </Text>
-              </View>
+      </View>
 
-              <View className="mb-6">
-                <Text className="text-xl text-white">Name</Text>
-                <TextInput
-                  value={form.name}
-                  onChangeText={(text) => setForm({ ...form, name: text })}
-                  className="h-10 w-64 border border-white rounded-md text-white px-4 py-2 text-lg"
-                />
-              </View>
-
-              <View className="mb-6">
-                <Text className="text-xl text-white">Password</Text>
-                <TextInput
-                  value={form.password}
-                  onChangeText={(text) => setForm({ ...form, password: text })}
-                  className="h-10 w-64 border border-white rounded-md text-white px-4 py-2 text-lg"
-                  secureTextEntry={true}
-                />
-              </View>
-
-              <View className="mb-6">
-                <Text
-                  onPress={() => updateProfile(form)}
-                  className="bg-black text-orange-500 py-2 px-4 rounded-full text-lg font-bold"
-                >
-                  Update Profile
-                </Text>
-              </View>
-            </>
-          ) : (
-            <View className="flex justify-center items-center">
-              <ActivityIndicator color="#FFA500" />
-              <Text className="text-xl text-white">Loading...</Text>
+      <View className="flex-1 justify-center items-center bg-white rounded-t-3xl px-6 py-6">
+        {profileData ? (
+          <>
+            <View className="mb-6 w-full">
+              <Text className="text-xl text-gray-800">Email</Text>
+              <Text className="text-lg text-gray-600">
+                {user?.emailAddresses[0].emailAddress.split("@")[0]}
+              </Text>
             </View>
-          )}
-        </View>
-      </LinearGradient>
+
+            <View className="mb-6 w-full">
+              <Text className="text-xl text-gray-800">Name</Text>
+              <TextInput
+                value={form.name}
+                onChangeText={(text) => setForm({ ...form, name: text })}
+                className="h-12 w-full border border-gray-300 rounded-md text-gray-800 px-4 py-2 text-lg"
+                placeholder="Enter your name"
+                placeholderTextColor="#A0AEC0"
+              />
+            </View>
+
+            <View className="mb-6 w-full">
+              <Text className="text-xl text-gray-800">Password</Text>
+              <TextInput
+                value={form.password}
+                onChangeText={(text) => setForm({ ...form, password: text })}
+                className="h-12 w-full border border-gray-300 rounded-md text-gray-800 px-4 py-2 text-lg"
+                secureTextEntry={true}
+                placeholder="Enter your password"
+                placeholderTextColor="#A0AEC0"
+              />
+            </View>
+
+            <View className="mb-6 w-full">
+              <TouchableOpacity
+                onPress={() => updateProfile(form)}
+                className="bg-orange-600 py-3 rounded-full text-lg font-bold flex justify-center items-center"
+              >
+                <Text className="text-white">Update Profile</Text>
+              </TouchableOpacity>
+            </View>
+          </>
+        ) : (
+          <View className="flex justify-center items-center">
+            <ActivityIndicator color="#FFA500" />
+            <Text className="text-xl text-gray-600">Loading...</Text>
+          </View>
+        )}
+      </View>
     </SafeAreaView>
   );
 }

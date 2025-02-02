@@ -4,8 +4,8 @@ const sql = neon(process.env.DATABASE_URL as string);
 
 export async function POST(request: Request) {
   try {
-    const { name, email, clerkId ,password} = await request.json();
-    if (!name || !email || !clerkId||!password) {
+    const { name, email, clerkId, password } = await request.json();
+    if (!name || !email || !clerkId || !password) {
       return new Response("Missing fields");
     }
     const res =
@@ -33,10 +33,12 @@ export async function PUT(request: Request) {
 }
 export async function GET(request: Request) {
   try {
-    const { userId } = await request.json();
-    console.log(userId);
-    const res = await sql`SELECT * FROM users WHERE id=${userId}`;
-    return new Response(JSON.stringify(res));
+    const { searchParams } = new URL(request.url);
+    const userId = searchParams.get("userId");
+    const res = await sql`SELECT * FROM users WHERE clerk_id=${userId}`;
+    return new Response(
+      JSON.stringify({response:res[0], message: "user fetched successfully" })
+    );
   } catch (err: any) {
     return new Response(err.message);
   }
